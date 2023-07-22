@@ -26,12 +26,12 @@ function validateGuess(guess) {
   if (isNaN(guess)) {
     alert('PLease enter a valid number');
   } else if (guess < 1) {
-    alert('PLease enter a number more than 1');
+    alert('PLease enter a number greater than 1');
   } else if (guess > 100) {
-    alert('PLease enter a  number less than 100');
+    alert('PLease enter a number less than 100');
   } else {
     prevGuess.push(guess);
-    if (numGuess === 11) {
+    if (numGuess === 10) {
       displayGuess(guess);
       displayMessage(`Game Over Random number was ${randomNumber}`);
       endGame();
@@ -72,6 +72,7 @@ function endGame() {
   p.innerHTML = `<input type="submit" id="subt" value="Start New Game">`;
   startOver.appendChild(p);
   playGame = false;
+  stopChangingColor();
   newGame();
 }
 
@@ -89,3 +90,31 @@ function newGame() {
     playGame = true;
   });
 }
+
+const randomColor = function () {
+  const hex = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += hex[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
+let intervalId;
+const startChangingColor = function () {
+  if (!intervalId) {
+    intervalId = setInterval(changeBgColor, 1000);
+  }
+
+  function changeBgColor() {
+    document.body.style.backgroundColor = randomColor();
+  }
+};
+const stopChangingColor = function () {
+  clearInterval(intervalId);
+  intervalId = null;
+};
+
+document.querySelector('#guessField').addEventListener('click', startChangingColor);
+
+// document.querySelector('#stop').addEventListener('click', stopChangingColor);
